@@ -14,6 +14,7 @@ public class GameFrame {
     private JLabel resultLabel;
     private GuessNumberGame game;
     private DifficultyMenu difficultyMenu;
+    private JLabel livesLabel;
 
     public void createAndShowDifficultyMenu() {
         difficultyMenu = new DifficultyMenu(this::startGameWithDifficulty);
@@ -24,16 +25,13 @@ public class GameFrame {
 
         switch (difficulty) {
             case "Fácil":
-                game = new GuessNumberGame(10);
+                game = new GuessNumberGame(8);
                 break;
             case "Intermedio":
-                game = new GuessNumberGame(7);
-                break;
-            case "Difícil":
                 game = new GuessNumberGame(5);
                 break;
-            default:
-                // Manejar caso por defecto
+            case "Difícil":
+                game = new GuessNumberGame(3);
                 break;
         }
 
@@ -52,6 +50,7 @@ public class GameFrame {
         textField = new JTextField(10);
         JButton guessButton = new JButton("Adivinar");
         resultLabel = new JLabel("");
+        livesLabel = new JLabel("Vidas restantes: " + game.getMaxAttempts());
 
         guessButton.addActionListener(new GuessButtonListener());
 
@@ -59,6 +58,7 @@ public class GameFrame {
         mainPanel.add(textField);
         mainPanel.add(guessButton);
         mainPanel.add(resultLabel);
+        mainPanel.add(livesLabel);
 
         frame.getContentPane().add(BorderLayout.CENTER, mainPanel);
         frame.setSize(300, 150);
@@ -78,14 +78,40 @@ public class GameFrame {
                 } else {
                     resultLabel.setText("Intenta con un número "
                             + (userGuess < game.getNumberToGuess() ? "más grande." : "más pequeño."));
+                    livesLabel.setText("Vidas restantes: " + (game.getMaxAttempts() - game.getAttempts()));
+                    textField.setText("");
                 }
 
                 if (game.isGameOver()) {
                     textField.setEditable(false);
+                    showGameOverDialog();
                 }
             } catch (NumberFormatException ex) {
                 resultLabel.setText("Por favor, ingresa un número válido.");
             }
+        }
+    }
+
+    private void showGameOverDialog() {
+        Object[] options = { "Volver a jugar", "Salir" };
+
+        int choice = JOptionPane.showOptionDialog(
+                frame,
+                "Has perdido. El número era " + game.getNumberToGuess(),
+                "¡Juego terminado!",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        if (choice == 0) {
+            // Volver a la pantalla de selección de dificultad
+            difficultyMenu.setVisible(true);
+            frame.dispose(); // Cerrar la ventana actual
+        } else if (choice == 1) {
+            // Salir de la aplicación
+            System.exit(0);
         }
     }
 }

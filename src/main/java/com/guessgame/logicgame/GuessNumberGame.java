@@ -27,6 +27,22 @@ public class GuessNumberGame {
         return attempts;
     }
 
+    public void setAttempts(int attempts) {
+        this.attempts = attempts;
+    }
+
+    public void setMaxAttempts(int maxAttempts) {
+        this.maxAttempts = maxAttempts;
+    }
+
+    public void setNumberToGuess(int numberToGuess) {
+        this.numberToGuess = numberToGuess;
+    }
+
+    public int getMaxAttempts() {
+        return maxAttempts;
+    }
+
     public boolean checkGuess(int userGuess) {
         return userGuess == numberToGuess;
     }
