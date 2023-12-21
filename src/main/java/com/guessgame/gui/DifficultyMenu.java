@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class DifficultyMenu extends JPanel{
+public class DifficultyMenu extends JPanel {
     private JFrame frame;
     private JComboBox<String> difficultyComboBox;
 
@@ -34,7 +34,8 @@ public class DifficultyMenu extends JPanel{
         mainPanel.add(startButton);
 
         frame.getContentPane().add(BorderLayout.CENTER, mainPanel);
-        frame.setSize(300, 150);
+        frame.setSize(400, 250); // Aumentamos el tamaño de la ventana
+        frame.setLocationRelativeTo(null); // Centrar la ventana en la pantalla
         frame.setVisible(true);
     }
 

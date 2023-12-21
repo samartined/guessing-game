@@ -1,12 +1,21 @@
 package com.guessgame.gui;
 
-import javax.swing.*;
-
-import com.guessgame.logicgame.GuessNumberGame;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import com.guessgame.logicgame.GuessNumberGame;
 
 public class GameFrame {
     private JFrame frame;
@@ -41,27 +50,40 @@ public class GameFrame {
     public void createAndShowGameGUI() {
         frame = new JFrame("Adivina el número");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
+        frame.getContentPane().setLayout(new BorderLayout());
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new FlowLayout());
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Añade un borde interno al panel
+        mainPanel.setBackground(Color.WHITE); // Establece el color de fondo del panel
 
         JLabel instructionLabel = new JLabel("Adivina el número entre 1 y 100:");
         textField = new JTextField(10);
-        JButton guessButton = new JButton("Adivinar");
         resultLabel = new JLabel("");
         livesLabel = new JLabel("Vidas restantes: " + game.getMaxAttempts());
+        mainPanel.add(instructionLabel, BorderLayout.NORTH);
+        mainPanel.add(resultLabel, BorderLayout.CENTER);
+        mainPanel.add(livesLabel, BorderLayout.SOUTH);
 
-        guessButton.addActionListener(new GuessButtonListener());
+        // Fuentes y estilos
+        Font labelFont = new Font("Arial", Font.BOLD, 16);
+        instructionLabel.setFont(labelFont);
+        resultLabel.setFont(labelFont);
+        livesLabel.setFont(labelFont);
 
-        mainPanel.add(instructionLabel);
-        mainPanel.add(textField);
-        mainPanel.add(guessButton);
-        mainPanel.add(resultLabel);
-        mainPanel.add(livesLabel);
+        JPanel inputPanel = new JPanel();
 
-        frame.getContentPane().add(BorderLayout.CENTER, mainPanel);
-        frame.setSize(300, 150);
+        JButton guessButton = new JButton("Adivinar");
+        guessButton.addActionListener(new GuessButtonListener()); // Evento del usuario para comprobar eñl número
+                                                                  // introducido
+        inputPanel.setLayout(new FlowLayout());
+        inputPanel.add(textField);
+        inputPanel.add(guessButton);
+
+        frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
+        frame.getContentPane().add(inputPanel, BorderLayout.SOUTH);
+        frame.setSize(400, 250); // Aumentamos el tamaño de la ventana
+        frame.setLocationRelativeTo(null); // Centrar la ventana en la pantalla
         frame.setVisible(true);
     }
 
