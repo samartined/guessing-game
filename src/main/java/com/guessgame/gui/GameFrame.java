@@ -46,17 +46,17 @@ public class GameFrame {
      * Inicia el juego con la dificultad seleccionada por el usuario.
      */
     public void startGameWithDifficulty() {
-        String difficulty = difficultyMenu.getSelectedDifficulty();
+        String selectedDifficulty = difficultyMenu.getSelectedDifficulty();
 
-        switch (difficulty) {
+        switch (selectedDifficulty) {
             case "Fácil (8 vidas)":
-                game = new GuessNumberGame(8);
+                game = new GuessNumberGame(8, selectedDifficulty);
                 break;
             case "Intermedio (5 vidas)":
-                game = new GuessNumberGame(5);
+                game = new GuessNumberGame(5, selectedDifficulty);
                 break;
             case "Difícil (3 vidas)":
-                game = new GuessNumberGame(3);
+                game = new GuessNumberGame(3, selectedDifficulty);
                 break;
         }
 
