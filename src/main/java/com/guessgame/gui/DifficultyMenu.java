@@ -55,20 +55,35 @@ public class DifficultyMenu extends JPanel {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         label.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         label.setForeground(textColor);
+        label.setFont(new Font("Arial", Font.BOLD, 14));
 
-        // Configuración del ComboBox de dificultad
-        difficultyComboBox = new JComboBox<>(new String[] { "Fácil", "Intermedio", "Difícil" });
-        difficultyComboBox.setFont(new Font("Arial", Font.PLAIN, 14));
-        difficultyComboBox.setMaximumSize((new Dimension(200, 30)));
-        difficultyComboBox.setAlignmentX(Component.CENTER_ALIGNMENT); // ComboBox centrado horizontalmente
-        difficultyComboBox.setBackground(buttonColor);
-        difficultyComboBox.setForeground(textColor);
+        try {
+            // Configuración del ComboBox de dificultad
+            difficultyComboBox = new JComboBox<>(
+                    new String[] { "Fácil (8 vidas)", "Intermedio (5 vidas)", "Difícil (3 vidas)" });
+            difficultyComboBox.setFont(new Font("Arial", Font.BOLD, 14));
+            difficultyComboBox.setMaximumSize((new Dimension(200, 30)));
+            difficultyComboBox.setAlignmentX(Component.CENTER_ALIGNMENT); // ComboBox centrado horizontalmente
+            difficultyComboBox.setBackground(buttonColor);
+            difficultyComboBox.setForeground(textColor);
+
+            // Crea un renderizador personalizado para centrar el texto
+            DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+            renderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
+            difficultyComboBox.setRenderer(renderer);
+
+            difficultyComboBox.setAlignmentX(Component.CENTER_ALIGNMENT); // ComboBox centrado horizontalmente
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Configuración del botón de inicio
         JButton startButton = new JButton("Comenzar");
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Botón centrado horizontalmente
         startButton.setBackground(buttonColor);
-        startButton.setForeground(Color.white);
+        startButton.setForeground(textColor);
+        startButton.setFont(getFont().deriveFont(Font.BOLD, 14));
 
         // Acción al hacer clic en el botón de inicio
         startButton.addActionListener(new ActionListener() {

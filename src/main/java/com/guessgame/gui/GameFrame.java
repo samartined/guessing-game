@@ -49,17 +49,18 @@ public class GameFrame {
         String difficulty = difficultyMenu.getSelectedDifficulty();
 
         switch (difficulty) {
-            case "Fácil":
+            case "Fácil (8 vidas)":
                 game = new GuessNumberGame(8);
                 break;
-            case "Intermedio":
+            case "Intermedio (5 vidas)":
                 game = new GuessNumberGame(5);
                 break;
-            case "Difícil":
+            case "Difícil (3 vidas)":
                 game = new GuessNumberGame(3);
                 break;
         }
 
+        // Inicia el juego
         createAndShowGameGUI();
     }
 
@@ -95,6 +96,8 @@ public class GameFrame {
         livesLabel = new JLabel("Vidas restantes: " + game.getMaxAttempts()); // Etiqueta para mostrar las vidas
         livesLabel.setForeground(textColor); // Establece el color del texto como azul oscuro
         livesLabel.setHorizontalAlignment(SwingConstants.CENTER); // Centra el texto horizontalmente
+
+        // Etiqueta de resultado. Se muestra cuando el usuario adivina el número.
         resultLabel = new JLabel(""); // Etiqueta para mostrar el resultado del juego restantes
 
         // Crea el panel principal y lo configura
@@ -117,16 +120,20 @@ public class GameFrame {
         gbc.gridy = 2;
         mainPanel.add(resultLabel, gbc);
 
-        // Crea el campo de texto para ingresar el número
-        textField = new JTextField(10); // Campo de texto para ingresar el número
-
-        frame.getContentPane().add(mainPanel, BorderLayout.CENTER); // Agrega el panel principal al marco
-
         // Fuentes y estilos
         Font labelFont = new Font("Arial", Font.BOLD, 16);
         instructionLabel.setFont(labelFont);
         resultLabel.setFont(labelFont);
         livesLabel.setFont(labelFont);
+
+        // Crea el campo de texto para ingresar el número
+        textField = new JTextField(10); // Campo de texto para ingresar el número
+        textField.setBackground(Color.white); // Establece el color de fondo del campo de texto como blanco
+        textField.setForeground(textColor); // Establece el color del texto del campo de texto como azul oscuro
+        textField.setFont(labelFont);
+        textField.setHorizontalAlignment(JTextField.CENTER); // Centra el texto horizontalmente
+
+        frame.getContentPane().add(mainPanel, BorderLayout.CENTER); // Agrega el panel principal al marco
 
         // Crea un panel de entrada
         JPanel inputPanel = new JPanel();
@@ -135,7 +142,18 @@ public class GameFrame {
         guessButton.addActionListener(new GuessButtonListener()); // Evento del usuario para comprobar el número
                                                                   // introducido
         guessButton.setBackground(buttonColor); // Establece el color de fondo del botón como naranja claro
-        guessButton.setForeground(Color.white); // Establece el color del texto del botón como blanco
+        guessButton.setForeground(textColor); // Establece el color del texto del botón como blanco
+        guessButton.setFont(labelFont);
+
+        JPanel menuButtonPanel = new JPanel();
+        menuButtonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+        JButton menuButton = new JButton("Volver al menú");
+        menuButton.setBackground(buttonColor); // Establece el color de fondo del botón como naranja claro
+        menuButton.setForeground(textColor); // Establece el color del texto del botón como blanco
+        menuButton.addActionListener(new MenuButtonListener()); // Evento del usuario para volver al menú
+        menuButton.setFont(labelFont.deriveFont(Font.BOLD, 12));
+        menuButtonPanel.add(menuButton);
 
         // Configura el diseño y agrega los componentes al panel de entrada
         inputPanel.setLayout(new FlowLayout());
@@ -145,9 +163,20 @@ public class GameFrame {
         // Agrega los paneles al marco principal
         frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
         frame.getContentPane().add(inputPanel, BorderLayout.SOUTH);
+        frame.getContentPane().add(menuButtonPanel, BorderLayout.NORTH);
         frame.setSize(GuiConstants.FRAME_WIDTH, GuiConstants.FRAME_HEIGHT); // Aumentamos el tamaño de la ventana
         frame.setLocationRelativeTo(null); // Centrar la ventana en la pantalla
         frame.setVisible(true);
+    }
+
+    // Nuevo ActionListener para el botón de menú
+    private class MenuButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Volver al menú
+            createAndShowDifficultyMenu();
+            frame.dispose(); // Cierra la ventana actual
+        }
     }
 
     // Escucha de eventos para el botón de adivinar
@@ -197,9 +226,11 @@ public class GameFrame {
                 options[0]);
 
         if (choice == 0) {
+            createAndShowDifficultyMenu();
+            // Volver a jugar
+            frame.dispose(); // Cerrar la ventana actual
             // Volver a la pantalla de selección de dificultad
             difficultyMenu.setVisible(true);
-            frame.dispose(); // Cerrar la ventana actual
         } else if (choice == 1) {
             // Salir de la aplicación
             System.exit(0);
