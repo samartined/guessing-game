@@ -2,9 +2,12 @@ package com.guessgame.gui;
 
 import javax.swing.*;
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.guessgame.bestgamerecord.BestGameRecord;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 /**
  * La clase DifficultyMenu representa un componente de interfaz gráfica de
@@ -17,6 +20,7 @@ import java.awt.event.ActionListener;
 public class DifficultyMenu extends JPanel {
     private JFrame frame;
     private JComboBox<String> difficultyComboBox;
+    private JTextArea historyTextArea;
 
     public DifficultyMenu(Runnable onSelectDifficulty) {
 
@@ -83,7 +87,6 @@ public class DifficultyMenu extends JPanel {
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Botón centrado horizontalmente
         startButton.setBackground(buttonColor);
         startButton.setForeground(textColor);
-        startButton.setFont(getFont().deriveFont(Font.BOLD, 14));
 
         // Acción al hacer clic en el botón de inicio
         startButton.addActionListener(new ActionListener() {
@@ -92,7 +95,32 @@ public class DifficultyMenu extends JPanel {
                 onSelectDifficulty.run();
                 frame.dispose();
             }
+
         });
+
+        // Configuración del botón de historial
+        JButton historyButton = new JButton("Mejores Partidas");
+        historyButton.setAlignmentX(Component.LEFT_ALIGNMENT); // Botón alineado a la izquierda
+
+        // Agregar el botón de historial al panel principal
+
+        historyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateHistory(BestGameRecord.getBestGames());
+            }
+        });
+
+        historyTextArea = new JTextArea();
+        historyTextArea.setEditable(false);
+        historyTextArea.setBackground(backgroundColor);
+        historyTextArea.setFont(new Font("Arial", Font.PLAIN, 12));
+
+        JPanel historyPanel = new JPanel();
+        historyPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        historyPanel.add(historyButton);
+        historyPanel.add(historyTextArea);
+        historyPanel.setBackground(backgroundColor);
 
         // Agregar componentes al panel principal
         mainPanel.add(tituloJuego);
@@ -101,6 +129,8 @@ public class DifficultyMenu extends JPanel {
         mainPanel.add(difficultyComboBox);
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(startButton);
+        mainPanel.add(Box.createVerticalStrut(30));
+        mainPanel.add(historyPanel);
 
         // Agregar panel principal a la ventana
         frame.getContentPane().add(BorderLayout.CENTER, mainPanel);
@@ -117,5 +147,15 @@ public class DifficultyMenu extends JPanel {
 
     public String getSelectedDifficulty() {
         return (String) difficultyComboBox.getSelectedItem();
+    }
+
+    public void updateHistory(List<BestGameRecord> bestGames) {
+        historyTextArea.setText("Historial de Mejores Partidas:\n");
+
+        for (BestGameRecord bestGame : bestGames) {
+            historyTextArea.append("Fecha: " + bestGame.getDate() +
+                    ", Dificultad: " + bestGame.getDifficulty() +
+                    ", Intentos: " + bestGame.getAttempts() + "\n");
+        }
     }
 }

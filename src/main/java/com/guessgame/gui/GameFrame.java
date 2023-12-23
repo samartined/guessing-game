@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import com.guessgame.bestgamerecord.BestGameRecord;
 import com.guessgame.logicgame.GuessNumberGame;
 
 /**
@@ -200,6 +201,8 @@ public class GameFrame {
                 if (game.isGameOver()) { // Verifica si el juego ha terminado
                     textField.setEditable(false); // Deshabilita la edición del campo de texto
                     showGameOverDialog(); // Muestra el diálogo de fin de juego
+
+                    difficultyMenu.updateHistory(BestGameRecord.getBestGames()); // Actualiza el historial de partidas
                 }
             } catch (NumberFormatException ex) {
                 resultLabel.setText("Por favor, ingresa un número válido."); // Muestra un mensaje de error si el número

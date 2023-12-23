@@ -1,7 +1,6 @@
 package com.guessgame.bestgamerecord;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -49,21 +48,6 @@ public class BestGameRecord {
     @Override
     public String toString() {
         return "Fecha: " + date + ". Dificultad: " + difficulty + ", intentos: " + attempts + ".";
-    }
-
-    public static List<BestGameRecord> getBestGames(List<BestGameRecord> bestGamesHistory) {
-        List<BestGameRecord> bestGames = new ArrayList<>();
-        bestGames.addAll(bestGamesHistory);
-        bestGames.sort(new Comparator<BestGameRecord>() {
-            @Override
-            public int compare(BestGameRecord o1, BestGameRecord o2) {
-                return o1.getAttempts() - o2.getAttempts();
-            }
-        });
-        if (bestGames.size() > MAX_BEST_GAMES_TO_KEEP) {
-            bestGames = bestGames.subList(0, MAX_BEST_GAMES_TO_KEEP);
-        }
-        return bestGames;
     }
 
     public static List<BestGameRecord> getBestGames() {
